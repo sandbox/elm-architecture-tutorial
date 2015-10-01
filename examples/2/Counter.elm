@@ -33,6 +33,9 @@ view address model =
   div []
     [ button [ onClick address Decrement ] [ text "-" ]
     , div [ countStyle ] [ text (toString model) ]
+    , div [ countStyle ] [ text (toString (model * 2)) ]
+    , div [ countStyle ] [ text (toString (model * 3)) ]
+    , div [ countStyle ] [ text (toString (model * 4)) ]
     , button [ onClick address Increment ] [ text "+" ]
     ]
 

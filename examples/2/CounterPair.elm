@@ -11,13 +11,15 @@ import Html.Events exposing (..)
 type alias Model =
     { topCounter : Counter.Model
     , bottomCounter : Counter.Model
+    , middleCounter : Counter.Model
     }
 
 
-init : Int -> Int -> Model
-init top bottom =
+init : Int -> Int -> Int -> Model
+init top bottom middle =
     { topCounter = Counter.init top
     , bottomCounter = Counter.init bottom
+    , middleCounter = Counter.init middle
     }
 
 
@@ -27,12 +29,12 @@ type Action
     = Reset
     | Top Counter.Action
     | Bottom Counter.Action
-
+    | Middle Counter.Action
 
 update : Action -> Model -> Model
 update action model =
   case action of
-    Reset -> init 0 0
+    Reset -> init 0 0 0
 
     Top act ->
       { model |
@@ -44,6 +46,10 @@ update action model =
           bottomCounter <- Counter.update act model.bottomCounter
       }
 
+    Middle act ->
+      { model | middleCounter <- Counter.update act model.middleCounter }
+
+
 
 -- VIEW
 
@@ -52,5 +58,6 @@ view address model =
   div []
     [ Counter.view (Signal.forwardTo address Top) model.topCounter
     , Counter.view (Signal.forwardTo address Bottom) model.bottomCounter
+    , Counter.view (Signal.forwardTo address Middle) model.middleCounter
     , button [ onClick address Reset ] [ text "RESET" ]
     ]
